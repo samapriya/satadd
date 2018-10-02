@@ -25,12 +25,6 @@ def satfile(sensor,geometry,target):
         params = {'footprint': json.dumps(footprint),'limit': 4000}
     else:
         params = {'limit': 4000}
-    with open(os.path.join(home,'macro.csv'),'wb') as csvfile:
-        writer=csv.DictWriter(csvfile,fieldnames=["scene_id", "filename","download_url","location"], delimiter=',')
-        writer.writeheader()
-    with open(os.path.join(home,'micro.csv'),'wb') as csvfile:
-        writer=csv.DictWriter(csvfile,fieldnames=["scene_id", "filename","download_url","location"], delimiter=',')
-        writer.writeheader()
     print("Getting token...")
     config=configparser.ConfigParser()
     config.read(os.path.join(expanduser("~"),".satellogic-config"))
