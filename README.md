@@ -100,7 +100,7 @@ positional arguments:
     reproject           Batch reproject rasters using EPSG code
 
 
-    refresh             Refreshes your personal asset list and GEE Asset list
+    eerefresh           Refreshes your personal asset list and GEE Asset list
     idsearch            Does possible matches using asset name to give you asseth id/full path
     intersect           Exports a report of all assets(Personal & GEE) intersecting with provided geometry
     bandtype            Prints GEE bandtype and generates list to be used for export
