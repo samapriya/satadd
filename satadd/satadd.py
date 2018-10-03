@@ -176,7 +176,7 @@ def main(args=None):
         ''')
     parser_credrefresh.set_defaults(func=credrefresh_from_parser)
 
-    parser_dasync=subparsers.add_parser('dasync',help='Uses the Planet Client Async Downloader to download Planet Assets: Does not require activation')
+    parser_dasync=subparsers.add_parser('dasync',help='''Uses the Planet Client Async Downloader to download Planet Assets: Does not require activation''')
     parser_dasync.add_argument('--infile',help='Choose a geojson from geojson.io or the aoi-json you created earlier using ppipe aoijson')
     parser_dasync.add_argument('--item',help='Choose from Planet Item types Example: PSScene4Band, PSOrthoTile, REOrthoTile etc')
     parser_dasync.add_argument('--asset',help='Choose an asset type example: anlaytic, analytic_dn,analytic_sr,analytic_xml etc')
@@ -197,7 +197,7 @@ def main(args=None):
     parser_savedsearch.set_defaults(func=savedsearch_from_parser)
 
     parser_metadata=subparsers.add_parser('metadata',help='''Tool to tabulate and convert all metadata files from Planet
-        Item and Asset types for Ingestion into GEE
+Item and Asset types for Ingestion into GEE
 
         ''')
     parser_metadata.add_argument('--asset', help='Choose PS OrthoTile(PSO)|PS OrthoTile DN(PSO_DN)|PS OrthoTile Visual(PSO_V)|PS4Band Analytic(PS4B)|PS4Band DN(PS4B_DN)|PS4Band SR(PS4B_SR)|PS3Band Analytic(PS3B)|PS3Band DN(PS3B_DN)|PS3Band Visual(PS3B_V)|RE OrthoTile (REO)|RE OrthoTile Visual(REO_V)|DigitalGlobe MultiSpectral(DGMS)|DigitalGlobe Panchromatic(DGP)|PolarGeospatial CenterDEM Strip(PGCDEM)?')
