@@ -21,8 +21,7 @@ setuptools.setup(
     version='0.0.1',
     packages=find_packages(),
     url='https://github.com/samapriya/satadd',
-    install_requires=['gbdxtools>=0.15.12','Shapely>=1.6.4.post1','geopandas>=0.4.0','requests>=2.19.1','geojson>=2.4.0',
-    'earthengine-api>=0.1.138','gitpython>=2.1.11','pendulum>=2.0.2','Pygments>=2.2.0'],
+    install_requires=['gbdxtools>=0.15.12','planet>=1.1.0','Shapely>=1.6.4.post1','geopandas>=0.4.0','requests>=2.19.1','geojson>=2.4.0','earthengine-api>=0.1.138','gitpython>=2.1.11','pendulum>=2.0.2','Pygments>=2.2.0'],
     license='Apache 2.0',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
@@ -41,7 +40,7 @@ setuptools.setup(
     ),
     author='Samapriya Roy',
     author_email='samapriya.roy@gmail.com',
-    description='Simple CLI for piping Planet, Satellogic & GBDX Assets',
+    description='Simple CLI for piping Planet, Satellogic, GEE & GBDX Assets',
     entry_points={
         'console_scripts': [
             'satadd=satadd.satadd:main',

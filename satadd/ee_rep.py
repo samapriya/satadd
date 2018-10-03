@@ -9,8 +9,8 @@ import os
 pth = os.path.dirname(os.path.realpath(__file__))
 try:
     ee.Initialize()
-except Exception, e:
-    print 'Authenticate Earth Engine first and rerun program'
+except Exception as e:
+    print('Authenticate Earth Engine first and rerun program')
     time.sleep(2)
     os.system('earthengine authenticate')
 

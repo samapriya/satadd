@@ -6,7 +6,6 @@ import csv
 import sys
 import configparser
 from os.path import expanduser
-from more_itertools import unique_everseen
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 home=os.path.dirname(os.path.realpath(__file__))
 

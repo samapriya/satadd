@@ -13,6 +13,8 @@ from satellogic_imagery import satfile
 from satellogic_metadata import satmeta
 from satellogic_metalist import metalist
 from batchreproject import reproject
+from cli_metadata import metadata
+from async_download import ddownload
 from idsearch import idsearch
 from bandtypes import imgexp
 from export import exp
@@ -22,6 +24,15 @@ import textwrap as _textwrap
 from argparse import RawTextHelpFormatter
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 path=os.path.dirname(os.path.realpath(__file__))
+
+def planet_key_entry(args):
+    if args.type=="quiet":
+        write_planet_json({'key': args.key})
+    elif args.type==None and args.key==None:
+        try:
+            subprocess.call('planet init',shell=True)
+        except Exception as e:
+            print('Failed to Initialize')
 
 def dginit():
     subprocess.call('python autenticator.py', shell=True)
@@ -42,6 +53,25 @@ def credrefresh():
     subprocess.call('python config_refresh.py', shell=True)
 def credrefresh_from_parser(args):
     credrefresh()
+
+def dasync_from_parser(args):
+    ddownload(infile=args.infile,
+           item=args.item,
+           asset=args.asset,
+           start=args.start,
+           end=args.end,
+           cmin=args.cmin,
+           cmax=args.cmax,
+           dirc=args.local)
+
+def savedsearch_from_parser(args):
+    if args.limit==None:
+        subprocess.call("python saved_search_download.py "+args.name+' '+args.asset+' '+args.local,shell=True)
+    else:
+        subprocess.call("python saved_search_download.py "+args.name+' '+args.asset+' '+args.local+' '+args.limit,shell=True)
+
+def metadata_from_parser(args):
+    metadata(asset=args.asset,mf=args.mf,mfile=args.mfile,errorlog=args.errorlog,directory=args.dir)
 
 def info_from_parser(args):
     validate()
@@ -119,13 +149,20 @@ def exp_from_parser(args):
         geojson=args.aoi,
         operator=args.operator,
         )
+
 spacing = '                               '
 
 def main(args=None):
     parser = argparse.ArgumentParser(description='Simple CLI for piping Planet, Satellogic,GEE & GBDX Assets', formatter_class=argparse.RawTextHelpFormatter)
 
     subparsers = parser.add_subparsers()
-    parser_dginit = subparsers.add_parser('dginit',help='Initialize GBDX')
+    parser_planet_key = subparsers.add_parser('planetkey', help='Setting up planet API Key')
+    optional_named = parser_planet_key.add_argument_group('Optional named arguments')
+    optional_named.add_argument('--type', help='For direct key entry type --type quiet')
+    optional_named.add_argument('--key', help='Your Planet API Key')
+    parser_planet_key.set_defaults(func=planet_key_entry)
+
+    parser_dginit = subparsers.add_parser('dginit',help='Initialize Digital Globe GBDX')
     parser_dginit.set_defaults(func=dginit_from_parser)
 
     parser_satinit = subparsers.add_parser('satinit',help='Initialize Satellogic Tokens')
@@ -138,6 +175,38 @@ def main(args=None):
 
         ''')
     parser_credrefresh.set_defaults(func=credrefresh_from_parser)
+
+    parser_dasync=subparsers.add_parser('dasync',help='Uses the Planet Client Async Downloader to download Planet Assets: Does not require activation')
+    parser_dasync.add_argument('--infile',help='Choose a geojson from geojson.io or the aoi-json you created earlier using ppipe aoijson')
+    parser_dasync.add_argument('--item',help='Choose from Planet Item types Example: PSScene4Band, PSOrthoTile, REOrthoTile etc')
+    parser_dasync.add_argument('--asset',help='Choose an asset type example: anlaytic, analytic_dn,analytic_sr,analytic_xml etc')
+    parser_dasync.add_argument('--local',help='Local Path where Planet Item and asset types are saved')
+    optional_named = parser_dasync.add_argument_group('Optional named arguments')
+    optional_named.add_argument('--start', help='Start date filter format YYYY-MM-DD',default=None)
+    optional_named.add_argument('--end', help='End date filter format YYYY-MM-DD',default=None)
+    optional_named.add_argument('--cmin', help='Cloud cover minimum between 0-1',default=None)
+    optional_named.add_argument('--cmax', help='Cloud cover maximum between 0-1',default=None)
+    parser_dasync.set_defaults(func=dasync_from_parser)
+
+    parser_savedsearch=subparsers.add_parser('savedsearch',help='Tool to download saved searches from Planet Explorer')
+    parser_savedsearch.add_argument('--name',help='Name of your saved search(It is case sensitive)')
+    parser_savedsearch.add_argument('--asset',help='Choose asset type analytic, analytic_xml, analytic_sr, analytic_dn etc')
+    parser_savedsearch.add_argument('--local',help='Local Path (full path address) where PlanetAssets are saved')
+    optional_named = parser_savedsearch.add_argument_group('Optional named arguments')
+    optional_named.add_argument('--limit', help='Choose number of assets you want to download')
+    parser_savedsearch.set_defaults(func=savedsearch_from_parser)
+
+    parser_metadata=subparsers.add_parser('metadata',help='''Tool to tabulate and convert all metadata files from Planet
+        Item and Asset types for Ingestion into GEE
+
+        ''')
+    parser_metadata.add_argument('--asset', help='Choose PS OrthoTile(PSO)|PS OrthoTile DN(PSO_DN)|PS OrthoTile Visual(PSO_V)|PS4Band Analytic(PS4B)|PS4Band DN(PS4B_DN)|PS4Band SR(PS4B_SR)|PS3Band Analytic(PS3B)|PS3Band DN(PS3B_DN)|PS3Band Visual(PS3B_V)|RE OrthoTile (REO)|RE OrthoTile Visual(REO_V)|DigitalGlobe MultiSpectral(DGMS)|DigitalGlobe Panchromatic(DGP)|PolarGeospatial CenterDEM Strip(PGCDEM)?')
+    parser_metadata.add_argument('--mf', help='Metadata folder?')
+    parser_metadata.add_argument('--mfile',help='Metadata filename to be exported along with Path.csv')
+    parser_metadata.add_argument('--errorlog',default='./errorlog.csv',help='Errorlog to be exported along with Path.csv')
+    optional_named = parser_metadata.add_argument_group('Optional named arguments')
+    optional_named.add_argument('--dir', help='Path to Image Directory to be used to get ImageTags with metadata. use only with PS4B_SR')
+    parser_metadata.set_defaults(func=metadata_from_parser)
 
     parser_simple_search = subparsers.add_parser('simple_search',help='Simple search to look for DG assets that intersect your AOI handles KML/SHP/GEOJSON')
     parser_simple_search.add_argument('--local',help='full path for folder or file with SHP/KML/GEOJSON')

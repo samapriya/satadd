@@ -3,17 +3,25 @@ CLI pipeline for Planet, Satellogic, Google Earth Engine and Digital Globe Image
 
 ```
 usage: satadd.py [-h]
-                 {dginit,satinit,eeinit,simple_search,metadata,footprint,satraster,satmeta,metalist,reproject,refresh,idsearch,intersect,bandtype,export}
+                 {planetkey,dginit,satinit,eeinit,dasync,savedsearch,metadata,simple_search,footprint,satraster,satmeta,metalist,reproject,refresh,idsearch,intersect,band
+type,export}
                  ...
 
 Simple CLI for piping Planet, Satellogic,GEE & GBDX Assets
 
 positional arguments:
-  {dginit,satinit,eeinit,simple_search,metadata,footprint,satraster,satmeta,metalist,reproject,refresh,idsearch,intersect,bandtype,export}
-    dginit              Initialize GBDX
+  {planetkey,dginit,satinit,eeinit,dasync,savedsearch,metadata,simple_search,footprint,satraster,satmeta,metalist,reproject,refresh,idsearch,intersect,bandtype,export}
+    planetkey           Setting up planet API Key
+    dginit              Initialize Digital Globe GBDX
     satinit             Initialize Satellogic Tokens
     eeinit              Initialize Google Earth Engine
     eeinit              Refresh Satellogic & GBDX tokens
+
+
+    dasync              Uses the Planet Client Async Downloader to download Planet Assets: Does not require activation
+    savedsearch         Tool to download saved searches from Planet Explorer
+    metadata            Tool to tabulate and convert all metadata files from Planet
+                                Item and Asset types for Ingestion into GEE
 
 
     simple_search       Simple search to look for DG assets that intersect your AOI handles KML/SHP/GEOJSON
