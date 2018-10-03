@@ -41,7 +41,7 @@ sudo apt-get install python-gdal
 ```
 For Windows I found this [guide](https://sandbox.idre.ucla.edu/sandbox/tutorials/installing-gdal-for-windows) from UCLA
 
-To install **Planet-GEE-Pipeline-CLI:**
+To install **satadd**
 You can install using two methods
 
 ```pip install satadd```
@@ -49,8 +49,8 @@ You can install using two methods
 or you can also try
 
 ```
-git clone https://github.com/samapriya/Planet-GEE-Pipeline-CLI.git
-cd Planet-GEE-Pipeline-CLI
+git clone https://github.com/samapriya/satadd.git
+cd satadd
 python setup.py install
 ```
 For linux use sudo. This release also contains a windows installer which bypasses the need for you to have admin permission, it does however require you to have python in the system path meaning when you open up command prompt you should be able to type python and start it within the command prompt window. Post installation using the installer you can just call satadd using the command prompt similar to calling python. Give it a go post installation type
@@ -79,7 +79,7 @@ positional arguments:
     dginit              Initialize Digital Globe GBDX
     satinit             Initialize Satellogic Tokens
     eeinit              Initialize Google Earth Engine
-    eeinit              Refresh Satellogic & GBDX tokens
+    credrefresh         Refresh Satellogic & GBDX tokens
 
 
     dasync              Uses the Planet Client Async Downloader to download Planet Assets: Does not require activation
@@ -123,13 +123,10 @@ planetkey           Setting up planet API Key
 dginit              Initialize Digital Globe GBDX
 satinit             Initialize Satellogic Tokens
 eeinit              Initialize Google Earth Engine
-eeinit              Refresh Satellogic & GBDX tokens
+credrefresh         Refresh Satellogic & GBDX tokens
 ```
 
-![cli](/images/terminal.gif)
-
-Once you type ```satadd terminal``` you get a shell inside your current terminal where you get autosuggest for image and have full functionality of the terminal.
-
+Each of these authentication tools allow you to link and save credentials for each of these services you can check them by typing something like ```satadd planetkey```. Certain services require the authentication tokens to be refreshed you can simply access it using ```satadd credrefresh```.
 
 ### satadd refresh
 For the past couple of months I have [maintained a catalog of the most current Google Earth Engine assets](https://github.com/samapriya/Earth-Engine-Datasets-List), within their raster data catalog. I update this list every week. This tool downloads the most current version of this list, and also looks into your personal assets to generate your very own asset report which then serve as a master dataset to feed into autosuggestions.
