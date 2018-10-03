@@ -35,7 +35,7 @@ def planet_key_entry(args):
             print('Failed to Initialize')
 
 def dginit():
-    subprocess.call('python autenticator.py', shell=True)
+    subprocess.call('python authenticator.py', shell=True)
 def dginit_from_parser(args):
     dginit()
 
