@@ -10,6 +10,9 @@ from simplesearch import search
 from gbdx_mexport import mxp
 from gbdx_fpexport import fxp
 from satellogic_imagery import satfile
+from satellogic_metadata import satmeta
+from satellogic_metalist import metalist
+from batchreproject import reproject
 from idsearch import idsearch
 from bandtypes import imgexp
 from export import exp
@@ -35,6 +38,11 @@ def eeinit():
 def eeinit_from_parser(args):
     eeinit()
 
+def credrefresh():
+    subprocess.call('python config_refresh.py', shell=True)
+def credrefresh_from_parser(args):
+    credrefresh()
+
 def info_from_parser(args):
     validate()
 
@@ -58,6 +66,21 @@ def satraster_from_parser(args):
     satfile(sensor=args.sensor,
         geometry=args.geometry,
         target=args.local)
+
+def satmeta_from_parser(args):
+    satmeta(sensor=args.sensor,
+        geometry=args.geometry,
+        target=args.local)
+
+def metalist_from_parser(args):
+    metalist(sensor=args.sensor,
+        geometry=args.geometry,
+        target=args.local)
+
+def reproject_from_parser(args):
+    reproject(dest=args.input,
+        output=args.output,
+        epsg=args.epsg)
 
 def refresh():
     filelist = glob.glob(os.path.join(path, "*.csv"))
@@ -99,7 +122,7 @@ def exp_from_parser(args):
 spacing = '                               '
 
 def main(args=None):
-    parser = argparse.ArgumentParser(description='Simple CLI for piping Planet, Satellogic & GBDX Assets', formatter_class=argparse.RawTextHelpFormatter)
+    parser = argparse.ArgumentParser(description='Simple CLI for piping Planet, Satellogic,GEE & GBDX Assets', formatter_class=argparse.RawTextHelpFormatter)
 
     subparsers = parser.add_subparsers()
     parser_dginit = subparsers.add_parser('dginit',help='Initialize GBDX')
@@ -108,10 +131,13 @@ def main(args=None):
     parser_satinit = subparsers.add_parser('satinit',help='Initialize Satellogic Tokens')
     parser_satinit.set_defaults(func=satinit_from_parser)
 
-    parser_eeinit = subparsers.add_parser('eeinit',help='''Initialize Google Earth Engine
+    parser_eeinit = subparsers.add_parser('eeinit',help='''Initialize Google Earth Engine''')
+    parser_eeinit.set_defaults(func=eeinit_from_parser)
+
+    parser_credrefresh = subparsers.add_parser('eeinit',help='''Refresh Satellogic & GBDX tokens
 
         ''')
-    parser_eeinit.set_defaults(func=eeinit_from_parser)
+    parser_credrefresh.set_defaults(func=credrefresh_from_parser)
 
     parser_simple_search = subparsers.add_parser('simple_search',help='Simple search to look for DG assets that intersect your AOI handles KML/SHP/GEOJSON')
     parser_simple_search.add_argument('--local',help='full path for folder or file with SHP/KML/GEOJSON')
@@ -128,7 +154,7 @@ def main(args=None):
     parser_metadata.set_defaults(func=metadata_from_parser)
 
     parser_footprint = subparsers.add_parser('footprint',help='''Exports footprint for metadata files extracted earlier'''+
-    linesep+"and converts them to individual geometries (GeoJSON)and combined geomtry (GeoJSON) file"+'''
+    linesep+"and converts them to individual geometries (GeoJSON)and combined geometry (GeoJSON) file"+'''
 
     ''')
     parser_footprint.add_argument('--local',help='full path for folder with metadata JSON files')
@@ -136,16 +162,34 @@ def main(args=None):
     parser_footprint.add_argument('--output',help="path to combined footprint geometry geojson")
     parser_footprint.set_defaults(func=footprint_from_parser)
 
-    parser_satraster = subparsers.add_parser('satraster',help='''Filter and download Satellogic Imagery
-
-        ''')
+    parser_satraster = subparsers.add_parser('satraster',help='''Filter and download Satellogic Imagery''')
     parser_satraster.add_argument('--sensor',help='Choose micro or macro depending on multispec or hyperspectal')
     parser_satraster.add_argument('--local',help='Local Path to save files')
     optional_named = parser_satraster.add_argument_group('Optional named arguments')
-    optional_named.add_argument('--geometry',help='''Pass GeoJSON geometry file as filter
+    optional_named.add_argument('--geometry',help='''Pass GeoJSON geometry file as filter''')
+    parser_satraster.set_defaults(func=satraster_from_parser)
+
+    parser_satmeta = subparsers.add_parser('satmeta',help='''Filter and download Satellogic Metadata''')
+    parser_satmeta.add_argument('--sensor',help='Choose micro or macro depending on multispec or hyperspectal')
+    parser_satmeta.add_argument('--local',help='Local Path to save files')
+    optional_named = parser_satmeta.add_argument_group('Optional named arguments')
+    optional_named.add_argument('--geometry',help='''Pass GeoJSON geometry file as filter''')
+    parser_satmeta.set_defaults(func=satmeta_from_parser)
+
+    parser_metalist = subparsers.add_parser('metalist',help='''Generates Basic Metadata list per scene for Satellogic Imagery''')
+    parser_metalist.add_argument('--sensor',help='Choose micro or macro depending on multispec or hyperspectal')
+    parser_metalist.add_argument('--local',help='Local full Path to csv files')
+    optional_named = parser_metalist.add_argument_group('Optional named arguments')
+    optional_named.add_argument('--geometry',help='Pass GeoJSON geometry file as filter')
+    parser_metalist.set_defaults(func=metalist_from_parser)
+
+    parser_reproject = subparsers.add_parser('reproject',help='''Batch reproject rasters using EPSG code
 
         ''')
-    parser_satraster.set_defaults(func=satraster_from_parser)
+    parser_reproject.add_argument('--input',help='Input folder with raster files')
+    parser_reproject.add_argument('--output',help='Output folder for reprojected files to be stored')
+    parser_reproject.add_argument('--epsg',help='EPSG Code for example 4326')
+    parser_reproject.set_defaults(func=reproject_from_parser)
 
     parser_refresh = subparsers.add_parser('refresh',help='Refreshes your personal asset list and GEE Asset list')
     parser_refresh.set_defaults(func=refresh_from_parser)

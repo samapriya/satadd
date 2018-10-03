@@ -11,7 +11,7 @@ os.chdir(os.path.dirname(os.path.realpath(__file__)))
 home=os.path.dirname(os.path.realpath(__file__))
 
 
-def satfile(sensor,geometry,target):
+def satmeta(sensor,geometry,target):
     if geometry !=None and os.path.isfile(geometry):
         footprint = {
         "type": "Polygon",
@@ -45,26 +45,24 @@ def satfile(sensor,geometry,target):
                     response = r.json()
                     print('')
                     print('Processing '+str(response['results'][0]['scene_id']))
-                    for items in response['results'][0]['rasters']:
+                    for items in response['results'][0]['attachments']:
                         filename=items['file_name']
                         itemurl=items['url']
                         locname=response['results'][0]['metadata']['location_requested_name']
-                        files=itemurl.split('scenes/')[1].split('/rasters')[0]
-                        bandname=itemurl.split('rasters/')[1].split('/download')[0]
-                        if not os.path.exists(os.path.join(target,scene_id)):
-                            os.makedirs(os.path.join(target,scene_id))
-                        if not os.path.isfile(os.path.join(target,scene_id,bandname)):
-                            print("Downloading "+str(os.path.join(scene_id,bandname)))
-                            dest=os.path.join(target,scene_id,bandname)
+                        if not os.path.exists(os.path.join(target,scene_id,"metadata")):
+                            os.makedirs(os.path.join(target,scene_id,"metadata"))
+                        if not os.path.isfile(os.path.join(target,scene_id,"metadata",filename)):
+                            print("Downloading "+str(os.path.join(scene_id,filename)))
+                            dest=os.path.join(target,scene_id,"metadata",filename)
                             url=itemurl
                             try:
                                 obj = SmartDL(url, dest)
                                 obj.start()
                                 path = obj.get_dest()
                             except Exception as e:
-                                print(e)
+                                pass
                         else:
-                            print("File already exists skipping "+str(os.path.join(scene_id,bandname)))
+                            print("File already exists skipping "+str(os.path.join(scene_id,filename)))
             except Exception as e:
                 print(e)
         elif sensor == 'micro':
@@ -76,29 +74,27 @@ def satfile(sensor,geometry,target):
                     response = r.json()
                     print('')
                     print('Processing '+str(response['results'][0]['scene_id']))
-                    for items in response['results'][0]['rasters']:
+                    for items in response['results'][0]['attachments']:
                         filename=items['file_name']
                         itemurl=items['url']
                         locname=response['results'][0]['metadata']['location_requested_name']
-                        files=itemurl.split('scenes/')[1].split('/rasters')[0]
-                        bandname=itemurl.split('rasters/')[1].split('/download')[0]
-                        if not os.path.exists(os.path.join(target,scene_id)):
-                            os.makedirs(os.path.join(target,scene_id))
-                        if not os.path.isfile(os.path.join(target,scene_id,bandname)):
-                            print("Downloading "+str(os.path.join(scene_id,bandname)))
-                            dest=os.path.join(target,scene_id,bandname)
+                        if not os.path.exists(os.path.join(target,scene_id,"metadata")):
+                            os.makedirs(os.path.join(target,scene_id,"metadata"))
+                        if not os.path.isfile(os.path.join(target,scene_id,"metadata",filename)):
+                            print("Downloading "+str(os.path.join(scene_id,filename)))
+                            dest=os.path.join(target,scene_id,"metadata",filename)
                             url=itemurl
                             try:
                                 obj = SmartDL(url, dest)
                                 obj.start()
                                 path = obj.get_dest()
                             except Exception as e:
-                                print(e)
+                                pass
                         else:
-                            print("File already exists skipping "+str(os.path.join(bandname)))
+                            print("File already exists skipping "+str(os.path.join(scene_id,filename)))
             except Exception as e:
                 print(e)
 
-# satfile(sensor='micro',
+# satmeta(sensor='micro',
 #     geometry=r"C:\Users\samapriya\Downloads\westcoast.geojson",
 #     target=r"C:\planet_demo\hyper")
