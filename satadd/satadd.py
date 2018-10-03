@@ -112,7 +112,7 @@ def reproject_from_parser(args):
         output=args.output,
         epsg=args.epsg)
 
-def refresh():
+def eerefresh():
     filelist = glob.glob(os.path.join(path, "*.csv"))
     for f in filelist:
         os.remove(f)
@@ -120,8 +120,8 @@ def refresh():
     subprocess.call('python gitcl.py', shell=True)
 
 
-def refresh_from_parser(args):
-    refresh()
+def eerefresh_from_parser(args):
+    eerefresh()
 
 
 def idsearch_from_parser(args):
@@ -171,7 +171,7 @@ def main(args=None):
     parser_eeinit = subparsers.add_parser('eeinit',help='''Initialize Google Earth Engine''')
     parser_eeinit.set_defaults(func=eeinit_from_parser)
 
-    parser_credrefresh = subparsers.add_parser('eeinit',help='''Refresh Satellogic & GBDX tokens
+    parser_credrefresh = subparsers.add_parser('credrefresh',help='''Refresh Satellogic & GBDX tokens
 
         ''')
     parser_credrefresh.set_defaults(func=credrefresh_from_parser)
@@ -260,8 +260,9 @@ Item and Asset types for Ingestion into GEE
     parser_reproject.add_argument('--epsg',help='EPSG Code for example 4326')
     parser_reproject.set_defaults(func=reproject_from_parser)
 
-    parser_refresh = subparsers.add_parser('refresh',help='Refreshes your personal asset list and GEE Asset list')
-    parser_refresh.set_defaults(func=refresh_from_parser)
+    parser_eerefresh = subparsers.add_parser('eerefresh',help='Refreshes your personal asset list and GEE Asset list')
+    parser_eerefresh.set_defaults(func=eerefresh_from_parser)
+
     parser_idsearch = subparsers.add_parser('idsearch',help='Does possible matches using asset name to give you asseth id/full path')
     parser_idsearch.add_argument('--name',help='Name or part of name to search for')
     parser_idsearch.set_defaults(func=idsearch_from_parser)
