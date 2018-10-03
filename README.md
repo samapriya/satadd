@@ -142,7 +142,7 @@ footprint           Exports footprint for metadata files extracted earlier
 ```
 
 ### Satellogic Tools
-This tool allows you to access the [open data shared by Satellogic](https://github.com/satellogic/open-impact) and filter and pass a geometry object to get both micro(multiband) and macro (hyperspectral) rasters, metadata and basic metadalist. The download tool is a multipart downloader to handle quick downloads. The metalist tool can be used to create a simple metadata list for you to batch upload imagery into GEE for analysis. The reproject tool is included to handle batch reprojections as needed. The tool uses geometry passed as a geojson object go to [geojson.io](geojson.io)
+This tool allows you to access the [open data shared by Satellogic](https://github.com/satellogic/open-impact) and filter and pass a geometry object to get both micro(multiband) and macro (hyperspectral) rasters, metadata and basic metadalist. The download tool is a multipart downloader to handle quick downloads. The metalist tool can be used to create a simple metadata list for you to batch upload imagery into GEE for analysis. The reproject tool is included to handle batch reprojections as needed. The tool uses geometry passed as a geojson object go to [geojson.io](http://geojson.io)
 
 ```
 satraster           Filter and download Satellogic Imagery
