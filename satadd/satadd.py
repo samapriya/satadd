@@ -12,6 +12,8 @@ from gbdx_fpexport import fxp
 from satellogic_imagery import satfile
 from satellogic_metadata import satmeta
 from satellogic_metalist import metalist
+from satellogic_bandlist import bandlist
+from multiproc_pydl import funct
 from batchreproject import reproject
 from cli_metadata import metadata
 from async_download import ddownload
@@ -96,6 +98,16 @@ def satraster_from_parser(args):
     satfile(sensor=args.sensor,
         geometry=args.geometry,
         target=args.local)
+
+def satlist_from_parser(args):
+    bandlist(sensor=args.sensor,
+        geometry=args.geometry,
+        target=args.local)
+
+def multiproc_from_parser(args):
+    if __name__ == "__main__":
+        funct(local=args.bandlist,
+            final=args.local)
 
 def satmeta_from_parser(args):
     satmeta(sensor=args.sensor,
@@ -237,6 +249,18 @@ Item and Asset types for Ingestion into GEE
     optional_named = parser_satraster.add_argument_group('Optional named arguments')
     optional_named.add_argument('--geometry',help='''Pass GeoJSON geometry file as filter''')
     parser_satraster.set_defaults(func=satraster_from_parser)
+
+    parser_satlist = subparsers.add_parser('satlist',help='''Get url for band list based on filtered Satellogic Imagery''')
+    parser_satlist.add_argument('--sensor',help='Choose micro or macro depending on multispec or hyperspectal')
+    parser_satlist.add_argument('--local',help='Full path to csv file to save urls')
+    optional_named = parser_satlist.add_argument_group('Optional named arguments')
+    optional_named.add_argument('--geometry',help='''Pass GeoJSON geometry file as filter''',default=None)
+    parser_satlist.set_defaults(func=satlist_from_parser)
+
+    parser_multiproc = subparsers.add_parser('multiproc',help='''Multiprocess based downloader based on satlist''')
+    parser_multiproc.add_argument('--bandlist',help='Choose the earlier bandlist that you created')
+    parser_multiproc.add_argument('--local',help='Local Path to save files')
+    parser_multiproc.set_defaults(func=multiproc_from_parser)
 
     parser_satmeta = subparsers.add_parser('satmeta',help='''Filter and download Satellogic Metadata''')
     parser_satmeta.add_argument('--sensor',help='Choose micro or macro depending on multispec or hyperspectal')

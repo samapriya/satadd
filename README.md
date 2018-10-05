@@ -2,7 +2,7 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1445740.svg)](https://doi.org/10.5281/zenodo.1445740)
 [![PyPI version](https://badge.fury.io/py/satadd.svg)](https://badge.fury.io/py/satadd)
 
-Cite as 
+Cite as
 ```
 Samapriya Roy. (2018, October 4). samapriya/satadd: satadd: CLI pipeline for Planet, Satellogic, Google Earth Engine and Digital Globe Imagery (Version 0.0.1). Zenodo. http://doi.org/10.5281/zenodo.1445740
 ```
@@ -93,6 +93,8 @@ positional arguments:
 
 
     satraster           Filter and download Satellogic Imagery
+    satlist             Get url for band list based on filtered Satellogic Imagery
+    multiproc           Multiprocess based downloader based on satlist
     satmeta             Filter and download Satellogic Metadata
     metalist            Generates Basic Metadata list per scene for Satellogic Imagery
     reproject           Batch reproject rasters using EPSG code
@@ -106,7 +108,7 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
-  ```
+```
 
 To obtain help for a specific functionality, simply call it with _help_ switch, e.g.: `satadd idsearch -h`. If you didn't install satadd, then you can run it just by going to *satadd* directory and running `python satadd.py [arguments go here]`
 
@@ -149,10 +151,12 @@ footprint           Exports footprint for metadata files extracted earlier
 ```
 
 ### Satellogic Tools
-This tool allows you to access the [open data shared by Satellogic](https://github.com/satellogic/open-impact) and filter and pass a geometry object to get both micro(multiband) and macro (hyperspectral) rasters, metadata and basic metadalist. The download tool is a multipart downloader to handle quick downloads. The metalist tool can be used to create a simple metadata list for you to batch upload imagery into GEE for analysis. The reproject tool is included to handle batch reprojections as needed. The tool uses geometry passed as a geojson object go to [geojson.io](http://geojson.io)
+This tool allows you to access the [open data shared by Satellogic](https://github.com/satellogic/open-impact) and filter and pass a geometry object to get both micro(multiband) and macro (hyperspectral) rasters, metadata and basic metadalist. The download tool is a multipart downloader to handle quick downloads. The metalist tool can be used to create a simple metadata list for you to batch upload imagery into GEE for analysis. The reproject tool is included to handle batch reprojections as needed. The tool uses geometry passed as a geojson object go to [geojson.io](http://geojson.io). Satlist produces the band list urls and you can then use the multiproc tool to use multiprocessing to download the links.
 
 ```
 satraster           Filter and download Satellogic Imagery
+satlist             Get url for band list based on filtered Satellogic Imagery
+multiproc           Multiprocess based downloader based on satlist
 satmeta             Filter and download Satellogic Metadata
 metalist            Generates Basic Metadata list per scene for Satellogic Imagery
 reproject           Batch reproject rasters using EPSG code
@@ -168,3 +172,10 @@ intersect           Exports a report of all assets(Personal & GEE) intersecting 
 bandtype            Prints GEE bandtype and generates list to be used for export
 export              Export GEE Collections based on filter
 ```
+
+## Changelog
+
+### v0.0.2
+
+- Now searches for all DG and non DG assets available within GBDX
+- Added capability to create url list for rasters and download support using multiprocessing
