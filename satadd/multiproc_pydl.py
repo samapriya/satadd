@@ -2,6 +2,8 @@
 
 import multiprocessing
 import os
+import sys
+import time
 import csv
 import requests
 
@@ -35,24 +37,29 @@ class MultiProcDownloader(object):
         The target method that the process uses tp download the specified url
         """
         try:
-            basefolder=url.split('-')[0]
-            fname = url.split('-')[1].split('rasters/')[1].split('/download')[0] #Filename this is critical change for general use
-            foldname=url.split('-')[1].split('scenes/')[1].split('/rasters')[0]
-            msg = "Starting download of %s" % fname
+            basefolder=url.split('=')[0]
+            foldname=url.split('=')[1]
+            filename=url.split('=')[2].split('[')[0]
+            msg = "Starting download of %s" % os.path.join(foldname,filename)
             if not os.path.exists(os.path.join(basefolder,foldname)):
                 os.makedirs(os.path.join(basefolder,foldname))
             os.chdir(os.path.join(basefolder,foldname))
-            url=url.split('-')[1]
-            if not os.path.isfile(os.path.join(basefolder,foldname,fname)):
-                print msg, multiprocessing.current_process().name
-                r = requests.get(url)
-                with open(os.path.join(basefolder,foldname,fname), "wb") as f:
-                    f.write(r.content)
+            url=url.split('[')[1]
+            #print(os.path.join(basefolder,foldname,filename))
+            if not os.path.isfile(os.path.join(basefolder,foldname,filename)):
+                r = requests.get(url, stream=True)
+                time.sleep(1)
+                if r.status_code==200:
+                    print msg, multiprocessing.current_process().name
+                    with open(os.path.join(basefolder,foldname,filename), 'wb') as f:
+                        for chunk in r.iter_content(chunk_size=1024 * 1024):
+                            if chunk: # filter out keep-alive new chunks
+                                f.write(chunk)
             else:
-                print("File already exists skipping "+str(fname))
+                print("File already exists skipping "+str(filename))
         except Exception as e:
             print(e)
-            print('Issues with file: '+str(fname))
+            # print('Issues with file: '+str(filename))
 
 def funct(local,final):
     if not os.path.exists(final):
@@ -62,12 +69,12 @@ def funct(local,final):
     with open(local) as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            urls.append(str(final)+'-'+row['download_url'])
+            urls.append(str(final)+'='+str(row['scene_id'])+'='+str(row['filename'])+'['+row['download_url'])
     downloader = MultiProcDownloader(urls)
     downloader.run()
 
 #----------------------------------------------------------------------
 if __name__ == "__main__":
-    funct(local,final)
+    funct(local=os.path.normpath(sys.argv[1]),final=os.path.normpath(sys.argv[2]))
     # downloader = MultiProcDownloader(urls)
     # downloader.run()

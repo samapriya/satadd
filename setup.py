@@ -17,7 +17,7 @@ def readme():
         return f.read()
 setuptools.setup(
     name='satadd',
-    version='0.0.2',
+    version='0.0.3',
     packages=find_packages(),
     url='https://github.com/samapriya/satadd',
     install_requires=['gbdxtools>=0.15.12','planet>=1.1.0','Shapely>=1.6.4.post1','geopandas>=0.4.0','requests>=2.19.1',

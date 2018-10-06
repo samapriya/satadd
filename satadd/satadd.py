@@ -4,6 +4,7 @@
 import argparse
 import os
 import glob
+import sys
 import subprocess
 from gbdx_validate import validate
 from simplesearch import search
@@ -26,6 +27,7 @@ import textwrap as _textwrap
 from argparse import RawTextHelpFormatter
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 path=os.path.dirname(os.path.realpath(__file__))
+sys.path.insert(0, path)
 
 def planet_key_entry(args):
     if args.type=="quiet":
@@ -105,9 +107,7 @@ def satlist_from_parser(args):
         target=args.local)
 
 def multiproc_from_parser(args):
-    if __name__ == "__main__":
-        funct(local=args.bandlist,
-            final=args.local)
+    subprocess.call("python multiproc_pydl.py "+args.bandlist+" "+args.local,shell=True)
 
 def satmeta_from_parser(args):
     satmeta(sensor=args.sensor,

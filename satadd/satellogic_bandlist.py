@@ -13,7 +13,7 @@ home=os.path.dirname(os.path.realpath(__file__))
 
 def bandlist(sensor,geometry,target):
     with open(os.path.join(target),'wb') as csvfile:
-        writer=csv.DictWriter(csvfile,fieldnames=["scene_id", "download_url"], delimiter=',')
+        writer=csv.DictWriter(csvfile,fieldnames=["scene_id", "filename","download_url"], delimiter=',')
         writer.writeheader()
     if geometry !=None and os.path.isfile(geometry):
         footprint = {
@@ -51,9 +51,10 @@ def bandlist(sensor,geometry,target):
                     print('Processing '+str(response['results'][0]['scene_id']))
                     for items in response['results'][0]['rasters']:
                         itemurl=items['url']
+                        filename=items['file_name']
                         with open(os.path.join(target),'a') as csvfile:
                             writer=csv.writer(csvfile,delimiter=',',lineterminator='\n')
-                            writer.writerow([str(scene_id),str(itemurl)])
+                            writer.writerow([str(scene_id),str(filename),str(itemurl)])
                         csvfile.close()
             except Exception as e:
                 print(e)
@@ -69,9 +70,10 @@ def bandlist(sensor,geometry,target):
                         print('Processing '+str(response['results'][0]['scene_id']))
                         for items in response['results'][0]['rasters']:
                             itemurl=items['url']
+                            filename=items['file_name']
                             with open(os.path.join(target),'a') as csvfile:
                                 writer=csv.writer(csvfile,delimiter=',',lineterminator='\n')
-                                writer.writerow([str(scene_id),str(itemurl)])
+                                writer.writerow([str(scene_id),str(filename),str(itemurl)])
                             csvfile.close()
                     else:
                         print(r.status_code)
@@ -80,4 +82,4 @@ def bandlist(sensor,geometry,target):
 
 # bandlist(sensor='macro',
 #     geometry=r"C:\Users\samapriya\Downloads\westcoast.geojson",
-#     target=r"C:\planet_demo\hyper\macrofy.csv")
+#     target=r"C:\planet_demo\hyper\macrout.csv")
