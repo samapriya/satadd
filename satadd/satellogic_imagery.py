@@ -48,14 +48,11 @@ def satfile(sensor,geometry,target):
                     for items in response['results'][0]['rasters']:
                         filename=items['file_name']
                         itemurl=items['url']
-                        locname=response['results'][0]['metadata']['location_requested_name']
-                        files=itemurl.split('scenes/')[1].split('/rasters')[0]
-                        bandname=itemurl.split('rasters/')[1].split('/download')[0]
                         if not os.path.exists(os.path.join(target,scene_id)):
                             os.makedirs(os.path.join(target,scene_id))
-                        if not os.path.isfile(os.path.join(target,scene_id,bandname)):
-                            print("Downloading "+str(os.path.join(scene_id,bandname)))
-                            dest=os.path.join(target,scene_id,bandname)
+                        if not os.path.isfile(os.path.join(target,scene_id,filename)):
+                            print("Downloading "+str(os.path.join(scene_id,filename)))
+                            dest=os.path.join(target,scene_id,filename)
                             url=itemurl
                             try:
                                 obj = SmartDL(url, dest)
@@ -64,7 +61,7 @@ def satfile(sensor,geometry,target):
                             except Exception as e:
                                 print(e)
                         else:
-                            print("File already exists skipping "+str(os.path.join(scene_id,bandname)))
+                            print("File already exists skipping "+str(os.path.join(scene_id,filename)))
             except Exception as e:
                 print(e)
         elif sensor == 'micro':
@@ -79,14 +76,11 @@ def satfile(sensor,geometry,target):
                     for items in response['results'][0]['rasters']:
                         filename=items['file_name']
                         itemurl=items['url']
-                        locname=response['results'][0]['metadata']['location_requested_name']
-                        files=itemurl.split('scenes/')[1].split('/rasters')[0]
-                        bandname=itemurl.split('rasters/')[1].split('/download')[0]
                         if not os.path.exists(os.path.join(target,scene_id)):
                             os.makedirs(os.path.join(target,scene_id))
-                        if not os.path.isfile(os.path.join(target,scene_id,bandname)):
-                            print("Downloading "+str(os.path.join(scene_id,bandname)))
-                            dest=os.path.join(target,scene_id,bandname)
+                        if not os.path.isfile(os.path.join(target,scene_id,filename)):
+                            print("Downloading "+str(os.path.join(scene_id,filename)))
+                            dest=os.path.join(target,scene_id,filename)
                             url=itemurl
                             try:
                                 obj = SmartDL(url, dest)
@@ -95,7 +89,7 @@ def satfile(sensor,geometry,target):
                             except Exception as e:
                                 print(e)
                         else:
-                            print("File already exists skipping "+str(os.path.join(bandname)))
+                            print("File already exists skipping "+str(os.path.join(filename)))
             except Exception as e:
                 print(e)
 
