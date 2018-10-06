@@ -176,6 +176,11 @@ export              Export GEE Collections based on filter
 
 ## Changelog
 
+### v0.0.3
+
+- Added better filename parsing for Satellogic images
+- Added error handling for multiprocessing download of Satellogic images
+
 ### v0.0.2
 
 - Now searches for all DG and non DG assets available within GBDX
