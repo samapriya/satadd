@@ -1,6 +1,5 @@
 import configparser
 import os
-import getpass
 import requests
 from os.path import expanduser
 from gbdxtools import Interface
@@ -25,6 +24,13 @@ try:
         Config.write(cfgfile)
         cfgfile.close()
     print('Satellogic Access token saved')
+    with open(os.path.join(expanduser("~"),".gbdx-config"),'r') as cfgfile:
+        config.readfp(cfgfile)
+        config.remove_section('gbdx_token')
+        config.remove_section('satellogic')
+        config.remove_section('token')
+    with open(os.path.join(expanduser("~"),".gbdx-config"),'w') as cfgfile:
+        config.write(cfgfile)
 except Exception as e:
     print(e)
 
