@@ -41,7 +41,7 @@ sudo apt-get install python-gdal
 ```
 For Windows I found this [guide](https://sandbox.idre.ucla.edu/sandbox/tutorials/installing-gdal-for-windows) from UCLA
 
-It has been brought to my notice that installing shapely on windows is not simply ```pip install shapely``` so install Shapely separely and [use instructions from their pypi project page](https://pypi.org/project/Shapely/) for Windows installation **Shapely is important requirement for the tool but since the installation varies based on the operating system but install it using the earlier instructions anyways before the next steps**. On other operating systems ```pip install shapely``` should work just fine.
+It has been brought to my attention that installing shapely on windows is not simply ```pip install shapely``` so install Shapely separately and [use instructions from their pypi project page](https://pypi.org/project/Shapely/) for Windows installation **Shapely is important requirement for the tool but since the installation varies based on the operating system install it using the earlier instructions anyways before the next steps**. On other operating systems ```pip install shapely``` should work just fine.
 
 
 To install **satadd**
