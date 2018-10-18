@@ -1,11 +1,11 @@
 # satadd: CLI pipeline for Planet, Satellogic, Google Earth Engine and Digital Globe Imagery
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1447589.svg)](https://doi.org/10.5281/zenodo.1447589)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1450622.svg)](https://doi.org/10.5281/zenodo.1450622)
 [![PyPI version](https://badge.fury.io/py/satadd.svg)](https://badge.fury.io/py/satadd)
 
 Cite as
 ```
-Samapriya Roy. (2018, October 5). samapriya/satadd: satadd: CLI pipeline for Planet, Satellogic,
-Google Earth Engine and Digital Globe Imagery (Version 0.0.2). Zenodo. http://doi.org/10.5281/zenodo.1447589
+Samapriya Roy. (2018, October 6). samapriya/satadd: satadd: CLI pipeline for Planet, Satellogic,
+Google Earth Engine and Digital Globe Imagery (Version 0.0.3). Zenodo. http://doi.org/10.5281/zenodo.1450622
 ```
 
 Google Earth Engine opened the door for the possibility of getting a curated list of public datasets already ingested in an analysis platform. With over 450+ raster datasets alone, they form one of the most unique collections for publicly available datasets and are still growing. While this was happening for free and open source datasets more and more data was coming in and companies were opening their doors to open data and has missions to include researchers, users, developers and everyone else who wanted to use this datasets. This included but is not limited to companies like Planet, Digital Globe and Satellogic making large chunks of their datasets open for users. Also introduction of high temporal resolution datasets like PlanetScope, high spatial resolution like Skysat and Digital Globe and high spectral resolution images like hyperspectral data from Satellogic was changing our approach to problem solving. While there has been development in building standard API and data access methods there is still room for growth and standrardization and above all easy access to these resources. Planet's [Open California Program](https://www.planet.com/products/open-california/), the [Education and Research Program](https://www.planet.com/markets/education-and-research/) , Digital Globe's [Open Data Program](https://www.digitalglobe.com/opendata) and [Education and Research program under Satellogic and their Open Data](https://github.com/satellogic/open-impact) it became obvious that questions we can ask from these sensors could get interesting.
@@ -175,6 +175,11 @@ export              Export GEE Collections based on filter
 ```
 
 ## Changelog
+
+### v0.0.3
+
+- Added better filename parsing for Satellogic images
+- Added error handling for multiprocessing download of Satellogic images
 
 ### v0.0.2
 
