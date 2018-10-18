@@ -3,6 +3,7 @@
 [![PyPI version](https://badge.fury.io/py/satadd.svg)](https://badge.fury.io/py/satadd)
 
 Cite as
+
 ```
 Samapriya Roy. (2018, October 6). samapriya/satadd: satadd: CLI pipeline for Planet, Satellogic,
 Google Earth Engine and Digital Globe Imagery (Version 0.0.3). Zenodo. http://doi.org/10.5281/zenodo.1450622
@@ -39,6 +40,9 @@ sudo apt-get install gdal-bin
 sudo apt-get install python-gdal
 ```
 For Windows I found this [guide](https://sandbox.idre.ucla.edu/sandbox/tutorials/installing-gdal-for-windows) from UCLA
+
+It has been brought to my notice that installing shapely on windows is not simply ```pip install shapely``` so install Shapely separely and [use instructions from their pypi project page](https://pypi.org/project/Shapely/) for Windows installation **Shapely is important requirement for the tool but since the installation varies based on the operating system but install it using the earlier instructions anyways before the next steps**. On other operating systems ```pip install shapely``` should work just fine.
+
 
 To install **satadd**
 You can install using two methods
@@ -175,6 +179,11 @@ export              Export GEE Collections based on filter
 ```
 
 ## Changelog
+
+### v0.0.4
+
+- Fixed issue with Shapely install on windows
+- Updated credrefresh to better refresh gbdx tokens
 
 ### v0.0.3
 

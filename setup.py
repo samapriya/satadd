@@ -17,10 +17,10 @@ def readme():
         return f.read()
 setuptools.setup(
     name='satadd',
-    version='0.0.3',
+    version='0.0.4',
     packages=find_packages(),
     url='https://github.com/samapriya/satadd',
-    install_requires=['gbdxtools>=0.15.12','planet>=1.1.0','Shapely>=1.6.4.post1','geopandas>=0.4.0','requests>=2.19.1',
+    install_requires=['gbdxtools>=0.15.12','planet>=1.1.0','geopandas>=0.4.0','requests>=2.19.1',
                       'geojson>=2.4.0','earthengine-api>=0.1.146','gitpython>=2.1.11','pendulum>=2.0.2','Pygments>=2.2.0'],
     license='Apache 2.0',
     long_description=open('README.md').read(),
